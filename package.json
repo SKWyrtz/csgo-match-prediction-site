@@ -1,0 +1,25 @@
+{
+  "name": "csgo-match-prediction-site",
+  "version": "1.0.0",
+  "description": "A site where users with an account can predict matches in CSGO and see ones previous prediction history. All data will be pulled from HLTV.org.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SKWyrtz/csgo-match-prediction-site.git"
+  },
+  "author": "Sigurd K. Würtz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SKWyrtz/csgo-match-prediction-site/issues"
+  },
+  "homepage": "https://github.com/SKWyrtz/csgo-match-prediction-site#readme",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.17.1"
+  }
+}
