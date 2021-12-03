@@ -59,9 +59,11 @@ function generateISO8601 (yearMonthDay, timeOfDay) {
   return new Date(year, month, day, hours, minutes).toISOString();
 }
 
-async function test () {
-  const matches = await getUpcomingMatches();
-  console.log(matches);
-}
+// async function test () {
+//   const matches = await getUpcomingMatches();
+//   console.log(matches);
+// }
 
-test();
+module.exports = {
+  getUpcomingMatches
+};

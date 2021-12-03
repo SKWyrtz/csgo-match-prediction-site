@@ -2,10 +2,10 @@
   "name": "csgo-match-prediction-site",
   "version": "1.0.0",
   "description": "A site where users with an account can predict matches in CSGO and see ones previous prediction history. All data will be pulled from HLTV.org.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/index.js"
+    "start": "node server/server.js"
   },
   "repository": {
     "type": "git",
