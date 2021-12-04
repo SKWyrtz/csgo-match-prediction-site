@@ -17,11 +17,15 @@ async function getUpcomingMatches () {
     const yearMonthDay = $(matchSection).find('.matchDayHeadline').text();
     const upcominMatch = $(matchSection).find('.upcomingMatch');
     upcominMatch.each((_, match) => {
+      const matchInfoEmpty = $(match).find('.matchInfoEmpty').children().first().text()
+      // if (matchInfoEmpty) {
+      //   matchInfoEmpty.children.first().text()
+      // }
       const matchPage = $(match).find('.match').attr('href');
       const timeOfDay = $(match).find('.matchTime').text();
       const event = $(match).find('.matchEventName').text();
-      const teamNames = $(match).find('.matchTeamName');
-      const teamLogos = $(match).find('.matchTeamLogo');
+      const teamNames = $(match).find('.matchTeam').children('.text-ellipsis');
+      const teamLogosArray = formatTeamLogos($(match).find('.matchTeamLogo'));
       const matchRating = $(match).find('.matchRating').children().first();
       const matchRatingClassName = matchRating.attr('class');
       let isTopTier = false;
@@ -31,10 +35,11 @@ async function getUpcomingMatches () {
         date: generateISO8601(yearMonthDay, timeOfDay),
         event: event,
         team1: teamNames.eq(0).text(),
-        team1Logo: teamLogos.eq(0).attr('src'),
+        team1Logo: teamLogosArray[0],
         team2: teamNames.eq(1).text(),
-        team2Logo: teamLogos.eq(1).attr('src'),
-        isTopTier: isTopTier
+        team2Logo: teamLogosArray[1],
+        isTopTier: isTopTier,
+        matchInfoEmpty: matchInfoEmpty
       };
       matches.push(matchData);
     });
@@ -57,6 +62,29 @@ function generateISO8601 (yearMonthDay, timeOfDay) {
   const hours = timeOfDaySplit[0].trim();
   const minutes = timeOfDaySplit[1].trim();
   return new Date(year, month, day, hours, minutes).toISOString();
+}
+
+function formatTeamLogos(teamLogos) {
+  let teamLogoArray = [];
+  let team1Logo = teamLogos.eq(0).attr('src');
+  if (team1Logo == '/img/static/team/placeholder.svg'){
+   team1Logo = 'https://www.hltv.org' + team1Logo;
+  }
+  if (team1Logo == null){
+    team1Logo = 'https://www.hltv.org/img/static/team/placeholder.svg'
+  }
+  teamLogoArray.push(team1Logo);
+
+  let team2Logo = teamLogos.eq(1).attr('src');
+  if (team2Logo == '/img/static/team/placeholder.svg'){
+    team2Logo = 'https://www.hltv.org' + team2Logo;
+  }
+  if (team2Logo == null){
+    team2Logo = 'https://www.hltv.org/img/static/team/placeholder.svg'
+  }
+  teamLogoArray.push(team2Logo);
+
+  return teamLogoArray
 }
 
 // async function test () {
