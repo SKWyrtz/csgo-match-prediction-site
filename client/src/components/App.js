@@ -1,6 +1,7 @@
 import React from 'react';
-import Match from './Match.js';
 import axios from 'axios';
+import Match from './Match.js';
+import Header from './Header.js'
 
 function App () {
   const [isLoaded, setIsLoading] = React.useState(true);
@@ -30,9 +31,10 @@ function App () {
   }
 
   return (
-    <div className='container bg-gray-100'>
+    <main className='container bg-gray-100'>
+      <Header />
       {content}
-    </div>
+    </main>
   );
 }
 
