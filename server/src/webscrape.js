@@ -30,6 +30,9 @@ async function getUpcomingMatches () {
       const matchRatingClassName = matchRating.attr('class');
       let isTopTier = false;
       if (matchRatingClassName === 'fa fa-star') isTopTier = true;
+
+      console.log(teamLogosArray)
+
       const matchData = {
         link: 'https://www.hltv.org' + matchPage,
         date: generateISO8601(yearMonthDay, timeOfDay),
@@ -37,10 +40,11 @@ async function getUpcomingMatches () {
         team1: teamNames.eq(0).text(),
         team1Logo: teamLogosArray[0],
         team2: teamNames.eq(1).text(),
-        team2Logo: teamLogosArray[1],
+        team2Logo: teamLogosArray[teamLogosArray.length - 1],
         isTopTier: isTopTier,
         matchInfoEmpty: matchInfoEmpty
       };
+
       matches.push(matchData);
     });
   });
@@ -66,20 +70,20 @@ function generateISO8601 (yearMonthDay, timeOfDay) {
 
 function formatTeamLogos(teamLogos) {
   let teamLogoArray = [];
-  let team1Logo = teamLogos.eq(0).attr('src');
-  if (team1Logo == '/img/static/team/placeholder.svg'){
-   team1Logo = 'https://www.hltv.org' + team1Logo;
+
+  let team1 = teamLogos.eq(0);
+  if (team1.hasClass('day-only')){
+    team1 = teamLogos.eq(1);
   }
-  if (team1Logo == null){
+  let team1Logo = team1.attr('src');
+  if (team1Logo == '/img/static/team/placeholder.svg'|| team1Logo == null){
     team1Logo = 'https://www.hltv.org/img/static/team/placeholder.svg'
   }
   teamLogoArray.push(team1Logo);
 
-  let team2Logo = teamLogos.eq(1).attr('src');
-  if (team2Logo == '/img/static/team/placeholder.svg'){
-    team2Logo = 'https://www.hltv.org' + team2Logo;
-  }
-  if (team2Logo == null){
+  let team2 = teamLogos.eq(-1);
+  let team2Logo = team2.attr('src');
+  if (team2Logo == '/img/static/team/placeholder.svg' || team2Logo == null){
     team2Logo = 'https://www.hltv.org/img/static/team/placeholder.svg'
   }
   teamLogoArray.push(team2Logo);

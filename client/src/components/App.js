@@ -31,7 +31,7 @@ function App () {
   }
 
   return (
-    <main className='container bg-gray-100'>
+    <main className='container bg-slate-800'>
       <Header />
       {content}
     </main>

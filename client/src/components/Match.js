@@ -5,7 +5,7 @@ const Match = (props) => {
 
   if (props.matchData.matchInfoEmpty === '') {
     return (
-    <div className='m-2 flex justify-evenly bg-red-400'>
+    <div className='m-2 flex justify-evenly bg-slate-500'>
       <div className='w-1/3 flex-col justify-center items-center'>
         <h2 className='text-center'>{props.matchData.team1}</h2>
         <img className='w-10 mx-auto' src={props.matchData.team1Logo} alt={props.matchData.team1 + " logo"} />
@@ -24,7 +24,7 @@ const Match = (props) => {
     )
   } else {
     return (
-      <div className='m-2 flex justify-evenly bg-red-400'>
+      <div className='m-2 flex justify-evenly bg-slate-500'>
       <div className='w-1/3 flex-col justify-center items-center'>
       </div>
       <div className='w-1/3 text-center'>

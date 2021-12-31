@@ -9,7 +9,7 @@ const app = express();
 app.get('/api', async (req, res) => {
   try {
     const matches = await webscrape.getUpcomingMatches();
-    console.log(matches);
+    //console.log(matches);
     res.json({ matches });
   } catch (error) {
     console.log(error);
