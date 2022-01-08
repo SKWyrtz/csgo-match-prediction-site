@@ -31,7 +31,7 @@ async function getUpcomingMatches () {
       let isTopTier = false;
       if (matchRatingClassName === 'fa fa-star') isTopTier = true;
 
-      console.log(teamLogosArray);
+      //console.log(teamLogosArray);
 
       const matchData = {
         link: 'https://www.hltv.org' + matchPage,
@@ -76,14 +76,14 @@ function formatTeamLogos (teamLogos) {
     team1 = teamLogos.eq(1);
   }
   let team1Logo = team1.attr('src');
-  if (team1Logo === '/img/static/team/placeholder.svg' || team1Logo === null) {
+  if (team1Logo === '/img/static/team/placeholder.svg' || team1Logo === null || team1Logo === undefined) {
     team1Logo = 'https://www.hltv.org/img/static/team/placeholder.svg';
   }
   teamLogoArray.push(team1Logo);
 
   const team2 = teamLogos.eq(-1);
   let team2Logo = team2.attr('src');
-  if (team2Logo === '/img/static/team/placeholder.svg' || team2Logo === null) {
+  if (team2Logo === '/img/static/team/placeholder.svg' || team2Logo === null || team2Logo === undefined) {
     team2Logo = 'https://www.hltv.org/img/static/team/placeholder.svg';
   }
   teamLogoArray.push(team2Logo);
