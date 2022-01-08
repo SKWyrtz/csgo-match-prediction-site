@@ -17,7 +17,7 @@ async function getUpcomingMatches () {
     const yearMonthDay = $(matchSection).find('.matchDayHeadline').text();
     const upcominMatch = $(matchSection).find('.upcomingMatch');
     upcominMatch.each((_, match) => {
-      const matchInfoEmpty = $(match).find('.matchInfoEmpty').children().first().text()
+      const matchInfoEmpty = $(match).find('.matchInfoEmpty').children().first().text();
       // if (matchInfoEmpty) {
       //   matchInfoEmpty.children.first().text()
       // }
@@ -31,7 +31,7 @@ async function getUpcomingMatches () {
       let isTopTier = false;
       if (matchRatingClassName === 'fa fa-star') isTopTier = true;
 
-      console.log(teamLogosArray)
+      console.log(teamLogosArray);
 
       const matchData = {
         link: 'https://www.hltv.org' + matchPage,
@@ -68,27 +68,27 @@ function generateISO8601 (yearMonthDay, timeOfDay) {
   return new Date(year, month, day, hours, minutes).toISOString();
 }
 
-function formatTeamLogos(teamLogos) {
-  let teamLogoArray = [];
+function formatTeamLogos (teamLogos) {
+  const teamLogoArray = [];
 
   let team1 = teamLogos.eq(0);
-  if (team1.hasClass('day-only')){
+  if (team1.hasClass('day-only')) {
     team1 = teamLogos.eq(1);
   }
   let team1Logo = team1.attr('src');
-  if (team1Logo == '/img/static/team/placeholder.svg'|| team1Logo == null){
-    team1Logo = 'https://www.hltv.org/img/static/team/placeholder.svg'
+  if (team1Logo === '/img/static/team/placeholder.svg' || team1Logo === null) {
+    team1Logo = 'https://www.hltv.org/img/static/team/placeholder.svg';
   }
   teamLogoArray.push(team1Logo);
 
-  let team2 = teamLogos.eq(-1);
+  const team2 = teamLogos.eq(-1);
   let team2Logo = team2.attr('src');
-  if (team2Logo == '/img/static/team/placeholder.svg' || team2Logo == null){
-    team2Logo = 'https://www.hltv.org/img/static/team/placeholder.svg'
+  if (team2Logo === '/img/static/team/placeholder.svg' || team2Logo === null) {
+    team2Logo = 'https://www.hltv.org/img/static/team/placeholder.svg';
   }
   teamLogoArray.push(team2Logo);
 
-  return teamLogoArray
+  return teamLogoArray;
 }
 
 // async function test () {
