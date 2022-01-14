@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Match from './Match.js';
-import Header from './Header.js'
+import Header from './Header.js';
 
 function App () {
   const [isLoaded, setIsLoading] = React.useState(true);
@@ -14,9 +14,9 @@ function App () {
   const getData = async () => {
     try {
       const response = await axios('/api');
-      setMatches(response.data.matches);
+      // console.log(response.data.result);
+      setMatches(response.data.result);
       setIsLoading(false);
-      console.log(response);
     } catch (error) {
       setIsLoading(false);
       console.log(error);

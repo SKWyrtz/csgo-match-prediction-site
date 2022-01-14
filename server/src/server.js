@@ -7,18 +7,21 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
 database.setupDB();
 database.updateMatches();
 
 app.get('/api', async (req, res) => {
   try {
-    const matches = database.getAllMatches();
-    //console.log(matches);
-    res.json({ matches });
+    database.getAllMatches((err, matches) => {
+      if (err) console.log(err);
+      console.log('HALLO');
+      res.json({ matches });
+    });
   } catch (error) {
     console.log(error);
+    throw (error);
   }
 });
 
