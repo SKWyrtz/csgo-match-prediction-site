@@ -14,6 +14,11 @@ function setupDB () {
 }
 
 async function updateMatches () {
+  await updateUpcomingMatches();
+  await updateFinishedMatches();
+}
+
+async function updateUpcomingMatches () {
   const matches = await webscrape.getUpcomingMatches(); // TODO: TRY-CATCH AROUND HERE
   console.log(matches[0]);
 
@@ -26,10 +31,17 @@ async function updateMatches () {
   const sql = 'INSERT OR IGNORE INTO matches VALUES ' + placeholders;
 
   db.run(sql, flatMatches, function (err) {
-    if (err) {
-      return console.error(err.message);
-    }
+    if (err) return console.error(err.message);
     console.log(`Rows inserted ${this.changes}`);
+  });
+}
+
+async function updateFinishedMatches () {
+  const sql = 'SELECT * FROM matches WHERE date(date) < date("2022-11-01")'; // should be 'now'
+
+  db.all(sql, [], (err, rows) => {
+    if (err) console.log(err);
+    console.log(rows);
   });
 }
 
@@ -69,6 +81,7 @@ module.exports = {
 };
 
 setupDB();
+updateFinishedMatches();
 // getAllMatches((err, result) => {
 //   if (err) console.log(err);
 //   console.log(result[0]);

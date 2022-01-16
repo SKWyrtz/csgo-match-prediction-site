@@ -31,7 +31,7 @@ async function getUpcomingMatches () {
       let isTopTier = false;
       if (matchRatingClassName === 'fa fa-star') isTopTier = true;
 
-      //console.log(teamLogosArray);
+      // console.log(teamLogosArray);
 
       const matchData = {
         link: 'https://www.hltv.org' + matchPage,
@@ -55,7 +55,7 @@ async function getUpcomingMatches () {
  * Generates a Date object
  * @param {string} yearMonthDay Year, month and day. Format example: 'Saturday - 2021-11-1313:45'. Name of the day is ignored.
  * @param {string} timeOfDay Time of day (hours and minutes). Format example: '18:00'
- * @returns Date object
+ * @returns Date String (ISO8601) with sqlite formatting
  */
 function generateISO8601 (yearMonthDay, timeOfDay) {
   const yearMonthDaySplit = yearMonthDay.split('-');
@@ -90,11 +90,6 @@ function formatTeamLogos (teamLogos) {
 
   return teamLogoArray;
 }
-
-// async function test () {
-//   const matches = await getUpcomingMatches();
-//   console.log(matches);
-// }
 
 module.exports = {
   getUpcomingMatches
