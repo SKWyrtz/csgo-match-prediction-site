@@ -14,8 +14,8 @@ function App () {
   const getData = async () => {
     try {
       const response = await axios('/api');
-      // console.log(response.data.result);
-      setMatches(response.data.result);
+      // console.log(response.data.matches);
+      setMatches(response.data.matches);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -39,6 +39,7 @@ function App () {
 }
 
 function renderMatches (matchesData) {
+  console.log(matchesData.length);
   return matchesData.map(match => {
     return <Match matchData={match} key={match.link} />;
   });
