@@ -12,7 +12,6 @@ A site where users with an account can predict matches in CSGO and see ones prev
 - Need to call updateMatches regularly
 - More endpoints?
 ### Frontend
-- Make matches clickable -> to hltv page
 - Filter eg only toptier matches
 - Make it possible to vote on a match
 - Show difference with future and past matches.
