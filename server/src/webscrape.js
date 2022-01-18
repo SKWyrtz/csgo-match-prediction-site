@@ -18,9 +18,6 @@ async function getUpcomingMatches () {
     const upcominMatch = $(matchSection).find('.upcomingMatch');
     upcominMatch.each((_, match) => {
       const matchInfoEmpty = $(match).find('.matchInfoEmpty').children().first().text();
-      // if (matchInfoEmpty) {
-      //   matchInfoEmpty.children.first().text()
-      // }
       const matchPage = $(match).find('.match').attr('href');
       const timeOfDay = $(match).find('.matchTime').text();
       const event = $(match).find('.matchEventName').text();
@@ -31,15 +28,15 @@ async function getUpcomingMatches () {
       let isTopTier = false;
       if (matchRatingClassName === 'fa fa-star') isTopTier = true;
 
-      // console.log(teamLogosArray);
-
       const matchData = {
         link: 'https://www.hltv.org' + matchPage,
         date: generateISO8601(yearMonthDay, timeOfDay),
         event: event,
         team1: teamNames.eq(0).text(),
+        team1Score: '',
         team1Logo: teamLogosArray[0],
         team2: teamNames.eq(1).text(),
+        team2Score: '',
         team2Logo: teamLogosArray[teamLogosArray.length - 1],
         isTopTier: isTopTier,
         matchInfoEmpty: matchInfoEmpty
@@ -65,7 +62,8 @@ function generateISO8601 (yearMonthDay, timeOfDay) {
   const timeOfDaySplit = timeOfDay.split(':');
   const hours = timeOfDaySplit[0].trim();
   const minutes = timeOfDaySplit[1].trim();
-  return new Date(year, month, day, hours, minutes).toISOString();
+  const date = new Date(year, parseInt(month) - 1, day, hours, minutes).toISOString(); // month is 0-indexed
+  return date.replace('Z', '');
 }
 
 function formatTeamLogos (teamLogos) {
@@ -91,6 +89,34 @@ function formatTeamLogos (teamLogos) {
   return teamLogoArray;
 }
 
+async function getFinishedMatches (URL) {
+  const { data } = await axios.get(URL);
+  const $ = cheerio.load(data);
+  const teamScores = {};
+
+  teamScores.team1Score = $('.team1-gradient').children().last().text();
+  teamScores.team2Score = $('.team2-gradient').children().last().text();
+
+  console.log('i slep');
+  await sleep(750);
+
+  return teamScores;
+}
+
+function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 module.exports = {
-  getUpcomingMatches
+  getUpcomingMatches,
+  getFinishedMatches
 };
+
+// (async () => {
+//   try {
+//     const text = await getUpcomingMatches();
+//     console.log(text[0]);
+//   } catch (e) {
+//     // Deal with the fact the chain failed
+//   }
+// })();

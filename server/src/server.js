@@ -10,12 +10,12 @@ const app = express();
 app.use(express.json());
 
 database.setupDB();
-database.updateMatches();
+database.updateDatabase(); // TODO: call function in a interval eg every 5 min
 
 app.get('/api', async (req, res) => {
   try {
     database.getAllMatches((err, matches) => {
-      if (err) console.log(err);
+      if (err) return console.error(err);
       console.log('HALLO');
       res.json({ matches });
     });
