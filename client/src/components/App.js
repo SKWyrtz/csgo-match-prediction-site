@@ -31,10 +31,16 @@ function App () {
   }
 
   return (
-    <main className='container bg-gray-700'>
+    <div>
       <Header />
-      {content}
-    </main>
+      <div>
+        <main className='container mx-auto bg-gray-700'>
+          <div className='w-auto mx-40'>
+            {content}
+          </div>
+        </main>
+      </div>
+    </div>
   );
 }
 

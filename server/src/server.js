@@ -16,7 +16,7 @@ app.get('/api', async (req, res) => {
   try {
     database.getAllMatches((err, matches) => {
       if (err) return console.error(err);
-      console.log('HALLO');
+      console.log('/api was requested');
       res.json({ matches });
     });
   } catch (error) {

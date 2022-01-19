@@ -4,7 +4,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#ff4800'
+        primary: '#ff9900'
+      },
+      dropShadow: {
+        custom: 'we'
       }
     }
   },

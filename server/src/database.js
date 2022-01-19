@@ -56,13 +56,11 @@ async function updateUpcomingMatches () {
 }
 
 async function updateFinishedMatches () {
-  // SELECT * FROM matches WHERE date(date) < date(\'now\')
   const today = new Date().toISOString();
   const date = today.slice('0', '10');
 
-  console.log(date);
-  const sql = `SELECT * FROM matches WHERE date(date) < date('${date}');`; // TODO: 'now' is on YYYY-MM-DD format so there is no hours and minutes. Change to minutes since 1970
-  allQuery(sql, async (err, rows) => { // TODO: Right now selects all done matches. Should only check done matches once
+  const sql = `SELECT * FROM matches WHERE date(date) < date('${date}') AND team1Score = "";`; // TODO: 'now' is on YYYY-MM-DD format so there is no hours and minutes. Change to minutes since 1970
+  allQuery(sql, async (err, rows) => {
     if (err) console.error(err);
     for await (const match of rows) {
       const matchTeamScore = await webscrape.getFinishedMatches(match.link_id);
@@ -81,12 +79,12 @@ async function requestIndividualMatchData (matchLink) {
 */
 
 function getAllMatches (callback) {
-  allQuery('SELECT * FROM matches', callback);
+  allQuery('SELECT * FROM matches ORDER BY date(date) ASC', callback); // TODO: Is not sorted by date
 }
 
 async function runQuery (sqlCommand, data) {
   const sql = sqlCommand;
-  db.run(sql, data, (err) => {
+  db.run(sql, data, function (err) {
     if (err) console.error(err);
     console.log(`Row(s) changed: ${this.changes}`);
   });
