@@ -2,3 +2,4 @@ INSERT or REPLACE INTO matches VALUES ('https://www.hltv.org/matches/2354039/wis
 SELECT * FROM matches WHERE date(date) < date('2022-01-18');
 SELECT * FROM matches WHERE date(date) < date('2022-01-21') AND team1Score = "";
 SELECT * FROM matches ORDER BY date(date)
+SELECT * FROM matches WHERE matchInfoEmpty != '' AND date(date) = date('2022-01-22');

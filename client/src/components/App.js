@@ -25,7 +25,7 @@ function App () {
 
   let content;
   if (isLoaded) {
-    content = <div>Loading...</div>;
+    content = <div className='w-max h-screen flex justify-center content-center text-center'><h1 className='text-7xl font-bold'>Loading...</h1></div>;
   } else {
     content = renderMatches(matches);
   }
