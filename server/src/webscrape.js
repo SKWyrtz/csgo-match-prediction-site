@@ -98,7 +98,7 @@ async function getFinishedMatches (URL) {
   teamScores.team2Score = $('.team2-gradient').children().last().text();
 
   console.log('i slep');
-  await sleep(750);
+  await sleep(500); // No probs at 750
 
   return teamScores;
 }
