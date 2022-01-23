@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 database.setupDB();
-database.updateDatabase();
+// database.updateDatabase();
 // setInterval(() => {
 //   database.updateDatabase();
 // }, 300000); // 5 min

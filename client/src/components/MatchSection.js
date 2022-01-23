@@ -1,4 +1,6 @@
-import Match from './Match';
+import FinishedMatch from './MatchComponents/FinishedMatch';
+import UpcomingMatch from './MatchComponents/UpcomingMatch';
+import UndecidedUpcomingMatch from './MatchComponents/UndecidedUpcomingMatch';
 
 const MatchSection = (props) => {
   return (
@@ -10,7 +12,13 @@ const MatchSection = (props) => {
 
 function renderMatches (matchesData) {
   return matchesData.map(match => {
-    return <Match matchData={match} key={match.link} />;
+    if (match.team1Score !== '') {
+      return <FinishedMatch matchData={match} key={match.link} />;
+    } else if (match.matchInfoEmpty === '') { // Upcoming match
+      return <UpcomingMatch matchData={match} key={match.link} />;
+    } else {
+      return <UndecidedUpcomingMatch matchData={match} key={match.link} />;
+    }
   });
 }
 
