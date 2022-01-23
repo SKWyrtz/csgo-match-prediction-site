@@ -10,9 +10,9 @@ app.use(express.json());
 
 database.setupDB();
 database.updateDatabase();
-setInterval(() => {
-  database.updateDatabase();
-}, 300000); // 5 min
+// setInterval(() => {
+//   database.updateDatabase();
+// }, 300000); // 5 min
 
 app.get('/api', async (req, res) => {
   try {

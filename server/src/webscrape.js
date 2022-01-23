@@ -1,4 +1,4 @@
-const axios = require('axios');
+const { default: axios } = require('axios');
 const cheerio = require('cheerio');
 
 /**
@@ -6,9 +6,30 @@ const cheerio = require('cheerio');
  * @returns matches
  */
 async function getUpcomingMatches () {
-  const { data } = await axios.get(
-    'https://www.hltv.org/matches'
-  );
+  const data = await axios.get(
+    'https://www.hltv.org/matches', {
+      headers: {
+        'Content-Type': 'application/json',
+        'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': '*',
+        'Accept-Language': 'en-US,en;q=0.5'
+      }
+    }).catch((err) => {
+    if (err.response) {
+      // Request made and server responded
+      console.log(err.response.data);
+      console.log(err.response.status);
+      console.log(err.response.headers);
+    } else if (err.request) {
+      // The request was made but no response was received
+      console.log(err.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', err.message);
+    }
+  });
+
   const $ = cheerio.load(data);
   const matches = [];
 
@@ -98,7 +119,7 @@ async function getFinishedMatches (URL) {
   teamScores.team2Score = $('.team2-gradient').children().last().text();
 
   console.log('i slep');
-  await sleep(500); // No probs at 750
+  await sleep(1000);
 
   return teamScores;
 }

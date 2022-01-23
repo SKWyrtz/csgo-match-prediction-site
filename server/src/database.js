@@ -34,6 +34,7 @@ function setupDB () {
 async function updateDatabase () {
   const matches = await webscrape.getUpcomingMatches(); // TODO: TRY-CATCH AROUND HERE
   console.log(matches.length);
+  console.log('STOP');
   await insertUpcomingMatches(matches);
   await updateUpcomingMatches(matches);
   await updateFinishedMatches();
