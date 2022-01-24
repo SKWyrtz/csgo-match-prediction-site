@@ -33,8 +33,6 @@ function setupDB () {
  */
 async function updateDatabase () {
   const matches = await webscrape.getUpcomingMatches(); // TODO: TRY-CATCH AROUND HERE
-  console.log(matches.length);
-  console.log('STOP');
   await insertUpcomingMatches(matches);
   await updateUpcomingMatches(matches);
   await updateFinishedMatches();
@@ -59,10 +57,10 @@ async function insertUpcomingMatches (matchesData) {
  * @param {JS Object} matchesData - array of upcoming matches
  */
 async function updateUpcomingMatches (matchesData) {
-  console.log('Updating existing matchData...'); // TODO: Maybe is not called???
+  console.log('Updating existing matchData...');
   const today = new Date().toISOString();
-  const date = today.slice('0', '10');
-  let sql = `SELECT * FROM matches WHERE matchInfoEmpty != '' AND date(date) = date('${date}')`;
+  const todayDate = today.slice('0', '16');
+  let sql = `SELECT * FROM matches WHERE matchInfoEmpty != '' AND date(date) = date('${todayDate}')`;
   allQuery(sql, async (err, rows) => {
     if (err) console.error(err);
     for await (const match of rows) {
@@ -97,11 +95,11 @@ function formatHltvLink (hltvLink) {
 /**
  * Updates finished matches with result score
  */
-async function updateFinishedMatches () {
+async function updateFinishedMatches () { // TODO: Also updates live matches and appends.
   const today = new Date().toISOString();
-  const date = today.slice('0', '10');
+  const date = today.slice('0', '16');
 
-  const sql = `SELECT * FROM matches WHERE date(date) < date('${date}') AND team1Score = "";`; // TODO: 'now' is on YYYY-MM-DD format so there is no hours and minutes. Change to minutes since 1970
+  const sql = `SELECT * FROM matches WHERE datetime(date) < datetime('${date}') AND team1Score = "";`;
   allQuery(sql, async (err, rows) => {
     if (err) console.error(err);
     for await (const match of rows) {
@@ -116,7 +114,7 @@ async function updateFinishedMatches () {
 }
 
 function getAllMatches (callback) {
-  allQuery('SELECT * FROM matches ORDER BY date(date) ASC', callback); // TODO: Is not sorted by date
+  allQuery('SELECT * FROM matches ORDER BY datetime(date) ASC', callback);
 }
 
 async function runQuery (sqlCommand, data) {

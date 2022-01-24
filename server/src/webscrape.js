@@ -6,9 +6,10 @@ const cheerio = require('cheerio');
  * @returns matches
  */
 async function getUpcomingMatches () {
-  const data = await axios.get(
-    'https://www.hltv.org/matches', {
+  const result = await axios.get(
+    'http://api.scraperapi.com?api_key=e391629f944f3e030d3f21b91ed1e54e&url=https://www.hltv.org/matches&render=true', {
       headers: {
+        Referer: 'https://www.google.com/',
         'Content-Type': 'application/json',
         'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
         'Access-Control-Allow-Origin': '*',
@@ -30,7 +31,7 @@ async function getUpcomingMatches () {
     }
   });
 
-  const $ = cheerio.load(data);
+  const $ = cheerio.load(result.data);
   const matches = [];
 
   const upcomingMatchesSection = $('.upcomingMatchesSection');
@@ -111,21 +112,41 @@ function formatTeamLogos (teamLogos) {
 }
 
 async function getFinishedMatches (URL) {
-  const { data } = await axios.get(URL);
+  const { data } = await axios.get(URL, {
+    headers: {
+      Referer: 'https://www.google.com/',
+      'Content-Type': 'application/json',
+      'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': '*',
+      'Accept-Language': 'en-US,en;q=0.5'
+    }
+  });
+
   const $ = cheerio.load(data);
   const teamScores = {};
 
   teamScores.team1Score = $('.team1-gradient').children().last().text();
   teamScores.team2Score = $('.team2-gradient').children().last().text();
 
-  console.log('i slep');
-  await sleep(1000);
+  console.log('Sleeps..');
+  await sleep(getRandomNumber(1000, 1200));
 
   return teamScores;
 }
 
+/**
+ * Sleeps/waits
+ */
 function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * @returns Random number betwen min and max
+ */
+function getRandomNumber (min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 module.exports = {

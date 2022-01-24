@@ -1,14 +1,21 @@
 import React from 'react';
 import axios from 'axios';
+import socketIOClient from 'socket.io-client';
 import Header from './Header.js';
 import MatchSection from './MatchSection.js';
+const ENDPOINT = 'http://localhost:5000/'; // Hardcoded
 
 function App () {
   const [isLoaded, setIsLoading] = React.useState(true);
   const [matches, setMatches] = React.useState([]);
 
+  let socket;
+
+  // Is run when components is mounted
   React.useEffect(() => {
     getData();
+    console.log(ENDPOINT);
+    socket = socketIOClient(ENDPOINT);
   }, []);
 
   const getData = async () => {
@@ -27,7 +34,7 @@ function App () {
   if (isLoaded) {
     content = <div className='w-max h-screen flex justify-center content-center text-center'><h1 className='text-7xl font-bold'>Loading...</h1></div>;
   } else {
-    content = <MatchSection matches={matches} />;
+    content = <MatchSection matches={matches} socket={socket} />;
   }
 
   return (
