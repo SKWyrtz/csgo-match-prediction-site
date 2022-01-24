@@ -8,14 +8,13 @@ const ENDPOINT = 'http://localhost:5000/'; // Hardcoded
 function App () {
   const [isLoaded, setIsLoading] = React.useState(true);
   const [matches, setMatches] = React.useState([]);
-
-  let socket;
+  // const socket = useRef(null);
 
   // Is run when components is mounted
   React.useEffect(() => {
     getData();
-    console.log(ENDPOINT);
-    socket = socketIOClient(ENDPOINT);
+    // console.log(ENDPOINT);
+    // socket.current = socketIOClient(ENDPOINT);
   }, []);
 
   const getData = async () => {
@@ -34,7 +33,7 @@ function App () {
   if (isLoaded) {
     content = <div className='w-max h-screen flex justify-center content-center text-center'><h1 className='text-7xl font-bold'>Loading...</h1></div>;
   } else {
-    content = <MatchSection matches={matches} socket={socket} />;
+    content = <MatchSection matches={matches} />;
   }
 
   return (

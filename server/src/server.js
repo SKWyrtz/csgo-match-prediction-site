@@ -40,6 +40,10 @@ io.on('connection', (socket) => {
   });
 });
 
+io.on('prediction', (date) => { // TODO: Virker nok ikke
+  console.log(date);
+});
+
 server.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

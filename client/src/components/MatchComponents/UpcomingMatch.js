@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import socket from '../../socket';
 
 const UpcomingMatch = (props) => {
   const [team1IsPredicted, setTeam1Prediction] = useState(false);
@@ -23,6 +24,10 @@ const UpcomingMatch = (props) => {
         setTeam1Prediction(false);
       }
     }
+    console.log(socket);
+    socket.emit('prediction', 'watever', (response) => {
+      console.log(response.status);
+    });
   }
   const date = new Date(props.matchData.date);
   return (
