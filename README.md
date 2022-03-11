@@ -10,8 +10,9 @@ Intial node version: v14.15.4
 ### Database.js
 - Need some more basic CRUD methods
 - Need table with guesses
+- Handle when its live
 ### Server.js
-- Need to call updateMatches regularly
+- Need to call updateMatches regularly (Beware of blacklist)
 - More endpoints?
 ### Frontend
 - Filter eg only toptier matches

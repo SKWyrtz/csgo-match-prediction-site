@@ -4,10 +4,11 @@ const cheerio = require('cheerio');
 /**
  * Webscrapes matches from hltv.org.
  * @returns matches
+ * http://api.scraperapi.com?api_key=e391629f944f3e030d3f21b91ed1e54e&url=https://www.hltv.org/matches&render=true
  */
 async function getUpcomingMatches () {
   const result = await axios.get(
-    'http://api.scraperapi.com?api_key=e391629f944f3e030d3f21b91ed1e54e&url=https://www.hltv.org/matches&render=true', {
+    'https://www.hltv.org/matches', {
       headers: {
         Referer: 'https://www.google.com/',
         'Content-Type': 'application/json',

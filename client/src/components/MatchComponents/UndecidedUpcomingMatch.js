@@ -6,7 +6,7 @@ const UndecidedUpcomingMatch = (props) => {
       <a className='w-1/3 text-center' href={props.matchData.link_id} target='_blank' rel='noreferrer'>
         <div className='text-center hover:text-gray-300'>
           <h1>{props.matchData.matchInfoEmpty}</h1>
-          <h2 className>{date.toDateString()}</h2>
+          <h2>{date.toDateString()}</h2>
         </div>
       </a>
       <div className='w-1/3 flex-col justify-center items-center' />

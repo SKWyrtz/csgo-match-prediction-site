@@ -10,7 +10,7 @@ const FinishedMatch = (props) => {
       <a className='w-4/12 text-center' href={props.matchData.link_id} target='_blank' rel='noreferrer'>
         <div className='text-center hover:text-gray-300'>
           <h2 className='text-primary'>VERSUS</h2>
-          <h2 className>{date.toDateString()}</h2>
+          <h2>{date.toDateString()}</h2>
           <h2 className=''>{props.matchData.event}</h2>
         </div>
       </a>

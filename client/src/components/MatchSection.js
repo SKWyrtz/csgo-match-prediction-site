@@ -1,3 +1,4 @@
+import React from 'react';
 import FinishedMatch from './MatchComponents/FinishedMatch';
 import UpcomingMatch from './MatchComponents/UpcomingMatch';
 import UndecidedUpcomingMatch from './MatchComponents/UndecidedUpcomingMatch';
@@ -6,9 +7,15 @@ const MatchSection = (props) => {
   return (
     <div className='w-auto mx-40'>
       {renderMatches(props.matches)}
+      <div className="">  
+        <input className="" type="checkbox" role="switch" id="flexSwitchCheckDefault"/>
+        <label className="" htmlFor="flexSwitchCheckDefault">Default switch checkbox input</label>
+      </div>
     </div>
   );
 };
+
+
 
 function renderMatches (matchesData) {
   return matchesData.map(match => {
