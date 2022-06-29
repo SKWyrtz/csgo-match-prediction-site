@@ -131,7 +131,7 @@ async function getFinishedMatches (URL) {
   teamScores.team2Score = $('.team2-gradient').children().last().text();
 
   console.log('Sleeps..');
-  await sleep(getRandomNumber(1000, 1200));
+  await sleep(getRandomNumber(1000, 1200)); // To avoid getting blacklisted again
 
   return teamScores;
 }
