@@ -21,6 +21,7 @@ database.updateDatabase();
 // }, 300000); // 5 min
 
 app.get('/api', async (req, res) => {
+  console.log('/api get request');
   try {
     database.getAllMatches((err, matches) => {
       if (err) return console.error(err);
@@ -38,10 +39,10 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-});
 
-io.on('prediction', (date) => { // TODO: Virker nok ikke
-  console.log(date);
+  socket.on('prediction', (data) => {
+    console.log(data);
+  });
 });
 
 server.listen(PORT, () => {
