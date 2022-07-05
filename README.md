@@ -9,7 +9,7 @@ Intial node version: v14.15.4
   - And if so, what was the score?
 ### Database.js
 - Need some more basic CRUD methods
-- Need table with guesses
+- If user changes guess
 - Handle when its live
 ### Server.js
 - Need to call updateMatches regularly (Beware of blacklist)

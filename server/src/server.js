@@ -20,16 +20,30 @@ database.updateDatabase();
 //   database.updateDatabase();
 // }, 300000); // 5 min
 
-app.get('/api', async (req, res) => {
+app.get('/matchesData', async (req, res) => {
   console.log('/api get request');
   try {
     database.getAllMatches((err, matches) => {
       if (err) return console.error(err);
-      console.log('/api was requested');
       res.json({ matches });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    throw (error);
+  }
+});
+
+app.get('/predictionData', async (req, res) => {
+  console.log('/predictions get request');
+  const userID = 1; // TODO: Hardcoded, should be specified in url
+  try {
+    database.getAllPredictions(userID, (err, predictions) => {
+      if (err) return console.error(err);
+      const predictionsFormatted = formatPrediction(predictions);
+      res.json({ predictionsFormatted });
+    });
+  } catch (error) {
+    console.error(error);
     throw (error);
   }
 });
@@ -42,9 +56,21 @@ io.on('connection', (socket) => {
 
   socket.on('prediction', (data) => {
     console.log(data);
+    database.insertPrediction(data);
   });
 });
 
 server.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
+
+function formatPrediction (data) { // TODO: refactor into ex a utility file
+  const predictionsAsString = data[0].predictions;
+  const result = {};
+  const predictionArray = predictionsAsString.split(',');
+  predictionArray.forEach(prediction => {
+    const newString = prediction.split(':::');
+    result[newString[0]] = newString[1];
+  });
+  return result;
+}

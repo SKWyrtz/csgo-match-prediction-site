@@ -6,8 +6,9 @@ import MatchSection from './MatchSection.js';
 const ENDPOINT = 'http://localhost:5000/'; // Hardcoded
 
 function App () {
-  const [isLoaded, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [matches, setMatches] = React.useState([]);
+  const [predictions, setPredictions] = React.useState([]);
   // const socket = useRef(null);
 
   // Is run when components is mounted
@@ -19,9 +20,12 @@ function App () {
 
   const getData = async () => {
     try {
-      const response = await axios('/api');
-      // console.log(response.data.matches);
-      setMatches(response.data.matches);
+      const matchRes = await axios('/matchesData');
+      setMatches(matchRes.data.matches);
+      const predictionRes = await axios('/predictionData');
+      console.log(predictionRes);
+      // console.log(predictionRes.data.predictionsFormatted['https://www.hltv.org/matches/2357023/iem-cologne-2022-play-in-upper-bracket-quarter-final-3-iem-cologne-2022-play-in']);
+      setPredictions(predictionRes.data);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -30,10 +34,10 @@ function App () {
   };
 
   let content;
-  if (isLoaded) {
+  if (isLoading) {
     content = <div className='w-max h-screen flex justify-center content-center text-center'><h1 className='text-7xl font-bold'>Loading...</h1></div>;
   } else {
-    content = <MatchSection matches={matches} />;
+    content = <MatchSection matches={matches} predictions={predictions} />;
   }
 
   return (
