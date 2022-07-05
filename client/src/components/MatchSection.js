@@ -17,9 +17,6 @@ const MatchSection = (props) => {
 
 function renderMatches (matchesData, predictionData) {
   return matchesData.map(match => {
-    // console.log(predictionData);
-    // console.log(match.link_id);
-    // console.log(predictionData.predictionsFormatted[match.link_id]);
     const prediction = predictionData.predictionsFormatted[match.link_id];
     if (match.team1Score !== '') {
       return <FinishedMatch matchData={match} predictionData={prediction} key={match.link_id} />;
