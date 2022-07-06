@@ -117,10 +117,12 @@ async function updateFinishedMatches () { // TODO: Also updates live matches and
     if (err) console.error(err);
     for await (const match of rows) {
       const matchTeamScore = await webscrape.getFinishedMatches(match.link_id);
-      console.log(matchTeamScore);
-      const sql = 'UPDATE matches SET team1Score = ?, team2Score = ? WHERE link_id = ?';
-      const placeholders = [matchTeamScore.team1Score, matchTeamScore.team2Score, match.link_id];
-      await runQuery(sql, placeholders);
+      if (!isNaN(matchTeamScore.team1Score) || !isNaN(matchTeamScore.team2Score)) { // Otherwise it is live
+        console.log(matchTeamScore);
+        const sql = 'UPDATE matches SET team1Score = ?, team2Score = ? WHERE link_id = ?';
+        const placeholders = [matchTeamScore.team1Score, matchTeamScore.team2Score, match.link_id];
+        await runQuery(sql, placeholders);
+      }
     }
     console.log('Done updating matches');
   });
@@ -139,8 +141,6 @@ function insertPrediction (prediction) {
     const sql = 'UPDATE userPredictions SET predictions = ? WHERE user_id = 1;'; // TODO: user_id is hardcoded until the site supports multiusers
     const placeholder = [predictionsConcatenated];
     runQuery(sql, placeholder);
-
-    console.log(predictionsConcatenated);
   }); // TODO: Hardcoded
 }
 

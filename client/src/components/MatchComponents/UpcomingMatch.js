@@ -49,6 +49,12 @@ const UpcomingMatch = (props) => {
     });
   }
   const date = new Date(props.matchData.date);
+  const dateOptions = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  };
 
   return (
     <div className='m-2 flex justify-evenly bg-gray-600'>
@@ -60,7 +66,8 @@ const UpcomingMatch = (props) => {
       <a className='w-4/12 text-center' href={props.matchData.link_id} target='_blank' rel='noreferrer'>
         <div className='text-center hover:text-gray-300'>
           <h2 className='text-primary'>VERSUS</h2>
-          <h2>{date.toDateString()}</h2>
+          <h2>{date.toLocaleDateString(undefined, dateOptions)}</h2>
+          <h2>{date.toLocaleTimeString()}</h2>
           <h2 className=''>{props.matchData.event}</h2>
         </div>
       </a>
