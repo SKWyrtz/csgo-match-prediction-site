@@ -12,8 +12,8 @@ const db = new sqlite3.Database('C:/Users/Sigurd/Projects/csgo-match-prediction-
 /**
  * Sets up the database
  */
-function setupDB () {
-  const sql = `
+async function setupDB () {
+  const setupMatchesTableSQL = `
   CREATE TABLE IF NOT EXISTS matches (link_id TEXT PRIMARY KEY,
                                       date TEXT, 
                                       event TEXT, 
@@ -26,7 +26,19 @@ function setupDB () {
                                       isTopTier INTEGER, 
                                       matchInfoEmpty TEXT);
   `;
-  runQuery(sql, []);
+  await runQuery(setupMatchesTableSQL, []);
+
+  const setupUserPredictionsTableSQL = `
+  CREATE TABLE IF NOT EXISTS userPredictions (user_id INTEGER PRIMARY KEY,
+                                      username TEXT NOT NULL,
+                                      predictions TEXT NOT NULL);
+  `;
+  runQuery(setupUserPredictionsTableSQL, []);
+
+  const insertFirstUserInPredictionsTableSQL = `
+  INSERT OR IGNORE INTO userPredictions VALUES (1, '','');
+  `;
+  runQuery(insertFirstUserInPredictionsTableSQL, []);
 }
 
 /**
@@ -68,15 +80,15 @@ async function updateUpcomingMatches (matchesData) {
       const updatedMatchInfo = matchesData.find(m => formatHltvLink(m.link) === formatHltvLink(match.link_id));
       if (!updatedMatchInfo) continue;
       if (updatedMatchInfo.matchInfoEmpty === '') {
-        const placeholders = [updatedMatchInfo.event, updatedMatchInfo.team1, updatedMatchInfo.team1Logo, updatedMatchInfo.team2, updatedMatchInfo.team2Logo, match.link_id];
         sql = `UPDATE matches 
-              SET event = ?,
-                team1 = ?, 
-                team1Logo = ?, 
-                team2 = ?, 
-                team2Logo = ?, 
-                matchInfoEmpty = ''
-              WHERE ? = link_id `;
+        SET event = ?,
+        team1 = ?, 
+        team1Logo = ?, 
+        team2 = ?, 
+        team2Logo = ?, 
+        matchInfoEmpty = ''
+        WHERE ? = link_id `;
+        const placeholders = [updatedMatchInfo.event, updatedMatchInfo.team1, updatedMatchInfo.team1Logo, updatedMatchInfo.team2, updatedMatchInfo.team2Logo, match.link_id];
         await runQuery(sql, placeholders);
       }
     }
@@ -105,10 +117,12 @@ async function updateFinishedMatches () { // TODO: Also updates live matches and
     if (err) console.error(err);
     for await (const match of rows) {
       const matchTeamScore = await webscrape.getFinishedMatches(match.link_id);
-      console.log(matchTeamScore);
-      const placeholders = [matchTeamScore.team1Score, matchTeamScore.team2Score, match.link_id];
-      const sql = 'UPDATE matches SET team1Score = ?, team2Score = ? WHERE link_id = ?';
-      await runQuery(sql, placeholders);
+      if (!isNaN(matchTeamScore.team1Score) || !isNaN(matchTeamScore.team2Score)) { // Otherwise it is live
+        console.log(matchTeamScore);
+        const sql = 'UPDATE matches SET team1Score = ?, team2Score = ? WHERE link_id = ?';
+        const placeholders = [matchTeamScore.team1Score, matchTeamScore.team2Score, match.link_id];
+        await runQuery(sql, placeholders);
+      }
     }
     console.log('Done updating matches');
   });
@@ -118,17 +132,31 @@ function getAllMatches (callback) {
   allQuery('SELECT * FROM matches ORDER BY datetime(date) ASC', callback);
 }
 
+function insertPrediction (prediction) {
+  allQuery('SELECT predictions FROM userPredictions WHERE user_id = 1', (err, data) => {
+    if (err) return console.error(err);
+    const predictionsTextField = data[0].predictions;
+    const formattedPrediction = `,${prediction.linkID}:::${prediction.predictedTeam}`; // TODO: using ':::' as divider - may not be sufficient
+    const predictionsConcatenated = predictionsTextField.concat(formattedPrediction);
+    const sql = 'UPDATE userPredictions SET predictions = ? WHERE user_id = 1;'; // TODO: user_id is hardcoded until the site supports multiusers
+    const placeholder = [predictionsConcatenated];
+    runQuery(sql, placeholder);
+  }); // TODO: Hardcoded
+}
+
+function getAllPredictions (userID, callback) {
+  allQuery(`SELECT predictions FROM userPredictions WHERE user_id = ${userID}`, callback);
+}
+
 async function runQuery (sqlCommand, data) {
-  const sql = sqlCommand;
-  db.run(sql, data, function (err) {
+  db.run(sqlCommand, data, function (err) {
     if (err) console.error(err);
     console.log(`Row(s) changed: ${this.changes}`);
   });
 }
 
 function allQuery (sqlCommand, callback) {
-  const sql = sqlCommand;
-  db.all(sql, [], (err, rows) => {
+  db.all(sqlCommand, [], (err, rows) => {
     if (err) {
       callback(err);
     }
@@ -139,5 +167,7 @@ function allQuery (sqlCommand, callback) {
 module.exports = {
   setupDB,
   updateDatabase,
-  getAllMatches
+  getAllMatches,
+  getAllPredictions,
+  insertPrediction
 };

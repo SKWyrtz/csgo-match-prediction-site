@@ -127,8 +127,8 @@ async function getFinishedMatches (URL) {
   const $ = cheerio.load(data);
   const teamScores = {};
 
-  teamScores.team1Score = $('.team1-gradient').children().last().text();
-  teamScores.team2Score = $('.team2-gradient').children().last().text();
+  teamScores.team1Score = parseInt($('.team1-gradient').children().last().text());
+  teamScores.team2Score = parseInt($('.team2-gradient').children().last().text());
 
   console.log('Sleeps..');
   await sleep(getRandomNumber(1000, 1200)); // To avoid getting blacklisted again
