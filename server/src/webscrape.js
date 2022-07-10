@@ -154,12 +154,3 @@ module.exports = {
   getUpcomingMatches,
   getFinishedMatches
 };
-
-// (async () => {
-//   try {
-//     const text = await getUpcomingMatches();
-//     console.log(text[0]);
-//   } catch (e) {
-//     // Deal with the fact the chain failed
-//   }
-// })();

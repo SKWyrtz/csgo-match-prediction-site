@@ -8,13 +8,10 @@ const ENDPOINT = 'http://localhost:5000/'; // Hardcoded
 function App () {
   const [isLoaded, setIsLoading] = React.useState(true);
   const [matches, setMatches] = React.useState([]);
-  // const socket = useRef(null);
 
   // Is run when components is mounted
   React.useEffect(() => {
     getData();
-    // console.log(ENDPOINT);
-    // socket.current = socketIOClient(ENDPOINT);
   }, []);
 
   const getData = async () => {

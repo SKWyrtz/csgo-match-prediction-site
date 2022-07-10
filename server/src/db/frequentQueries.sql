@@ -4,3 +4,5 @@ SELECT * FROM matches WHERE datetime(date) < datetime('2022-01-25T11:00') AND te
 
 SELECT * FROM matches ORDER BY date(date)
 SELECT * FROM matches WHERE matchInfoEmpty != '' AND datetime(date) = datetime('2022-01-22');
+DELETE FROM matches WHERE link_id = 'https://www.hltv.org/matches/2357173/ungentium-vs-flet-esea-advanced-season-41-europe';
+DELETE FROM matches WHERE link_id = 'https://www.hltv.org/matches/2357180/into-the-breach-vs-ec-kyiv-esport-tour-2022-series-2';
