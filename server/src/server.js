@@ -1,4 +1,5 @@
 const database = require('./database');
+const utility = require('./utility');
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -39,7 +40,7 @@ app.get('/predictionData', async (req, res) => {
   try {
     database.getAllPredictions(userID, (err, predictions) => {
       if (err) return console.error(err);
-      const predictionsFormatted = formatPrediction(predictions);
+      const predictionsFormatted = utility.formatPredictionToObject(predictions);
       res.json({ predictionsFormatted });
     });
   } catch (error) {
@@ -63,14 +64,3 @@ io.on('connection', (socket) => {
 server.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
-function formatPrediction (data) { // TODO: refactor into ex a utility file
-  const predictionsAsString = data[0].predictions;
-  const result = {};
-  const predictionArray = predictionsAsString.split(',');
-  predictionArray.forEach(prediction => {
-    const newString = prediction.split(':::');
-    result[newString[0]] = newString[1];
-  });
-  return result;
-}

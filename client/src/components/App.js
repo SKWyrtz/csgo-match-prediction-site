@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 import Header from './Header.js';
+import Checkbox from './Checkbox.js';
 import MatchSection from './MatchSection.js';
 const ENDPOINT = 'http://localhost:5000/'; // Hardcoded
 

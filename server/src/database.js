@@ -1,7 +1,8 @@
+const utility = require('./utility')
 const sqlite3 = require('sqlite3').verbose();
 const webscrape = require('./webscrape');
 
-const db = new sqlite3.Database('C:/Users/Sigurd/Projects/csgo-match-prediction-site/server/src/db/matches.db', (err) => { // TODO: relative path was not enough.
+const db = new sqlite3.Database('C:/Users/Repsa/Projects/csgo-match-prediction-site/server/src/db/matches.db', (err) => { // TODO: relative path was not enough.
   if (err) {
     console.error(err.message);
   } else {
@@ -133,13 +134,20 @@ function getAllMatches (callback) {
 }
 
 function insertPrediction (prediction) {
-  allQuery('SELECT predictions FROM userPredictions WHERE user_id = 1', (err, data) => {
+  allQuery('SELECT predictions FROM userPredictions WHERE user_id = 1', (err, data) => { //TODO: Hardcoded "user_id = 1" atm
     if (err) return console.error(err);
-    const predictionsTextField = data[0].predictions;
-    const formattedPrediction = `,${prediction.linkID}:::${prediction.predictedTeam}`; // TODO: using ':::' as divider - may not be sufficient
-    const predictionsConcatenated = predictionsTextField.concat(formattedPrediction);
+    const predictionsAsObject = utility.formatPredictionToObject(data);
+    // console.log(Object.keys(predictionsAsObject).length);
+    predictionsAsObject[prediction.linkID] = prediction.predictedTeam;
+    // console.log(Object.keys(predictionsAsObject).length);
+    console.log(predictionsAsObject);
+    const predictionsAsString = utility.formatPredictionToString(predictionsAsObject);
+    console.log(predictionsAsString);
+    // const predictionsTextField = data[0].predictions;
+    // const formattedPrediction = `,${prediction.linkID}:::${prediction.predictedTeam}`; // TODO: using ':::' as divider - may not be sufficient
+    // const predictionsConcatenated = predictionsTextField.concat(formattedPrediction);
     const sql = 'UPDATE userPredictions SET predictions = ? WHERE user_id = 1;'; // TODO: user_id is hardcoded until the site supports multiusers
-    const placeholder = [predictionsConcatenated];
+    const placeholder = [predictionsAsString];
     runQuery(sql, placeholder);
   }); // TODO: Hardcoded
 }
